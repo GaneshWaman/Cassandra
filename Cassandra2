@@ -1,0 +1,300 @@
+1. create a customer table to store following columns, customer id as primary key
+customer id, name, mobile set<int>,email tuple(text,text),purchaseveh map<text,int>,hoobies list<text>
+
+cqlsh:iacsd0923> create table customer (
+cid int primary key, 
+cname text, 
+mobile set<int>, 
+email tuple<text,text>, 
+purchaseveh map<text, int>, 
+hobbies list<text>);
+
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname | email | hobbies | mobile | purchaseveh
+-----+-------+-------+---------+--------+-------------
+
+(0 rows)
+
+2. insert 5 records with customer id 11,12,13,14,15
+
+cqlsh:iacsd0923> insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 11,'Ganesh',('ganesh@gmail.com'),['Swimming', 'Designing'],
+             ... {9922},{'Milk':3,'Bread':4});
+
+cqlsh:iacsd0923> insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 12,'Amrut',('amrut@gmail.com'),['Trekking', 'Traveling'],
+             ... {9923},{'Cheese':1,'Butter':6});
+cqlsh:iacsd0923> insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 14,'Vikram',('vikram@gmail.com'),['Reading', 'Traveling'],
+             ... {9924},{'Paneer':8,'Butter':6});
+cqlsh:iacsd0923> insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 13,'Kalpesh',('kalpesh@gmail.com'),['Dancing', 'Traveling'],
+             ... {9925},{'Paneer':8,'Milk':3});
+cqlsh:iacsd0923> insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 15,'Praveer',('Praveer@gmail.com'),['Dancing', 'Maths'],
+             ... {9926},{'Paneer':8,'Milk':3});
+
+
+
+
+
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname   | email                       | hobbies                   | mobile | purchaseveh
+-----+---------+-----------------------------+---------------------------+--------+----------------------------
+  13 | Kalpesh | ('kalpesh@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 |  Ganesh |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 | Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |  Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |   Amrut |   ('amrut@gmail.com', None) | ['Trekking', 'Traveling'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+
+
+3. add hoobies design, drawing for custid=12
+
+cqlsh:iacsd0923> update customer set hobbies[0]='Designing', hobbies[1]='Drawing' where cid=12;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname   | email                       | hobbies                   | mobile | purchaseveh
+-----+---------+-----------------------------+---------------------------+--------+----------------------------
+  13 | Kalpesh | ('kalpesh@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 |  Ganesh |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 | Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |  Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |   Amrut |   ('amrut@gmail.com', None) |  ['Designing', 'Drawing'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+
+
+4. remove hoobies design for custid=12
+cqlsh:iacsd0923> delete hobbies[0] from customer where cid=12;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname   | email                       | hobbies                   | mobile | purchaseveh
+-----+---------+-----------------------------+---------------------------+--------+----------------------------
+  13 | Kalpesh | ('kalpesh@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 |  Ganesh |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 | Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |  Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |   Amrut |   ('amrut@gmail.com', None) |               ['Drawing'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+
+5. update name of customer with id 11
+
+cqlsh:iacsd0923> update customer set cname = 'Govardhan' where cid =11;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                   | mobile | purchaseveh
+-----+-----------+-----------------------------+---------------------------+--------+----------------------------
+  13 |   Kalpesh | ('kalpesh@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |               ['Drawing'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+
+6. modify emails of customer 13
+
+cqlsh:iacsd0923> update customer set email = ('kamles@gmail.com') where cid =13;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                   | mobile | purchaseveh
+-----+-----------+-----------------------------+---------------------------+--------+----------------------------
+  13 |   Kalpesh |  ('kamles@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |               ['Drawing'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+
+
+7. add and delete one of the purchase vehicle (Insert and delete in map)
+ADD Vehicle:
+cqlsh:iacsd0923> update customer set purchaseveh=purchaseveh+{'BMW':9} where cid=15;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                   | mobile | purchaseveh
+-----+-----------+-----------------------------+---------------------------+--------+------------------------------------
+  13 |   Kalpesh |  ('kamles@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |           {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |            {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} | {'BMW': 9, 'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} |         {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |               ['Drawing'] | {9923} |         {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+
+
+
+
+
+
+
+
+DELETE Vehicle:
+cqlsh:iacsd0923> update customer set purchaseveh=purchaseveh-{'BMW'} where cid=15;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                   | mobile | purchaseveh
+-----+-----------+-----------------------------+---------------------------+--------+----------------------------
+  13 |   Kalpesh |  ('kamles@gmail.com', None) |  ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) | ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |      ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) |  ['Reading', 'Traveling'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |               ['Drawing'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+
+
+
+8. add and delete one of the hobbies for customer 14
+
+cqlsh:iacsd0923> update customer set hobbies=hobbies+['Dancing'] where cid=14;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                             | mobile | purchaseveh
+-----+-----------+-----------------------------+-------------------------------------+--------+----------------------------
+  13 |   Kalpesh |  ('kamles@gmail.com', None) |            ['Dancing', 'Traveling'] | {9925} |   {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) |           ['Swimming', 'Designing'] | {9922} |    {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |                ['Dancing', 'Maths'] | {9926} |   {'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) | ['Reading', 'Traveling', 'Dancing'] | {9924} | {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |                         ['Drawing'] | {9923} | {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+
+ 
+
+9.change the quantity of vehicle activa from customer id 15
+
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                             | mobile | purchaseveh
+-----+-----------+-----------------------------+-------------------------------------+--------+---------------------------------------
+  13 |   Kalpesh |  ('kamles@gmail.com', None) |            ['Dancing', 'Traveling'] | {9925} |              {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) |           ['Swimming', 'Designing'] | {9922} |               {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |                ['Dancing', 'Maths'] | {9926} | {'Activa': 1, 'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) | ['Reading', 'Traveling', 'Dancing'] | {9924} |            {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |                         ['Drawing'] | {9923} |            {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+cqlsh:iacsd0923> update customer set purchaseveh=purchaseveh+{'Activa':10} where cid=15;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                       | hobbies                             | mobile | purchaseveh
+-----+-----------+-----------------------------+-------------------------------------+--------+----------------------------------------
+  13 |   Kalpesh |  ('kamles@gmail.com', None) |            ['Dancing', 'Traveling'] | {9925} |               {'Milk': 3, 'Paneer': 8}
+  11 | Govardhan |  ('ganesh@gmail.com', None) |           ['Swimming', 'Designing'] | {9922} |                {'Bread': 4, 'Milk': 3}
+  15 |   Praveer | ('Praveer@gmail.com', None) |                ['Dancing', 'Maths'] | {9926} | {'Activa': 10, 'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |  ('vikram@gmail.com', None) | ['Reading', 'Traveling', 'Dancing'] | {9924} |             {'Butter': 6, 'Paneer': 8}
+  12 |     Amrut |   ('amrut@gmail.com', None) |                         ['Drawing'] | {9923} |             {'Butter': 6, 'Cheese': 1}
+
+(5 rows)
+ 
+
+ 
+
+
+Q2 Create a batch to 
+add 2 records in customer table, 
+delete record for customer 13 and 
+delete only email from customer 11 and 
+update emails for customer 12
+
+cqlsh:iacsd0923> begin batch
+             ... insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 16,'Prajwal',('prajwal@gmail.com'),['Cycling', 'Singing'],
+             ... {9927},{'Pulsar':1,'Jawa':2});
+             ... insert into customer (
+             ... cid,cname, email, hobbies, mobile, purchaseveh)
+             ... values(
+             ... 17,'Guddu',('guddu@gmail.com'),['Horse Riding', 'Chess'],
+             ... {9928},{'Pulsar':3,'Jawa':1});
+             ... delete from customer where cid=13;
+             ... delete email from customer where cid=11;
+             ... update customer set email=('amru@gmail.com','amu@gmail.com') where cid=12;
+             ... apply batch;
+cqlsh:iacsd0923> select * from customer;
+
+ cid | cname     | email                               | hobbies                             | mobile | purchaseveh
+-----+-----------+-------------------------------------+-------------------------------------+--------+----------------------------------------
+  16 |   Prajwal |         ('prajwal@gmail.com', None) |              ['Cycling', 'Singing'] | {9927} |               {'Jawa': 2, 'Pulsar': 1}
+  11 | Govardhan |                                null |           ['Swimming', 'Designing'] | {9922} |                {'Bread': 4, 'Milk': 3}
+  15 |   Praveer |         ('Praveer@gmail.com', None) |                ['Dancing', 'Maths'] | {9926} | {'Activa': 10, 'Milk': 3, 'Paneer': 8}
+  14 |    Vikram |          ('vikram@gmail.com', None) | ['Reading', 'Traveling', 'Dancing'] | {9924} |             {'Butter': 6, 'Paneer': 8}
+  17 |     Guddu |           ('guddu@gmail.com', None) |           ['Horse Riding', 'Chess'] | {9928} |               {'Jawa': 1, 'Pulsar': 3}
+  12 |     Amrut | ('amru@gmail.com', 'amu@gmail.com') |                         ['Drawing'] | {9923} |             {'Butter': 6, 'Cheese': 1}
+
+(6 rows)
+
+ 
+
+ 
+
+
+
+
+
+
+Q3. create type department to store deptno, dname
+
+ 
+
+a. change the type department to add dloc in it.
+create table emp to store 
+eid, ename, sal, projects List<text>, dept department 
+add 5 records in the table
+
+cqlsh:iacsd0923> insert into emp ( eid, dept, ename, projects, sal) values (1,{deptno:1, dname:'CLERK', dloc:'Pune'}, 'Noddy', ['App', 'Web'], '30,000');
+cqlsh:iacsd0923> select * from emp;
+
+ eid | dept                                      | ename | projects       | sal
+-----+-------------------------------------------+-------+----------------+--------
+   1 | {deptno: 1, dname: 'CLERK', dloc: 'Pune'} | Noddy | ['App', 'Web'] | 30,000
+
+(1 rows)
+cqlsh:iacsd0923> insert into emp ( eid, dept, ename, projects, sal) values (2,{deptno:2, dname:'DEVELOPER', dloc:'Pune'}, 'Moody', ['App'], '35,000');
+cqlsh:iacsd0923> insert into emp ( eid, dept, ename, projects, sal) values (3,{deptno:3, dname:'ADMIN', dloc:'Pune'}, 'Cody', ['Backend'], '25,000');
+cqlsh:iacsd0923> insert into emp ( eid, dept, ename, projects, sal) values (4,{deptno:2, dname:'DEVELOPER', dloc:'Pune'}, 'Rhody', ['Web'], '30,000');
+cqlsh:iacsd0923> insert into emp ( eid, dept, ename, projects, sal) values (5,{deptno:2, dname:'MANAGER', dloc:'Mumbai'}, 'Tony', ['App'], '35,000');
+cqlsh:iacsd0923> select * from emp;
+
+ eid | dept                                          | ename | projects       | sal
+-----+-----------------------------------------------+-------+----------------+--------
+   5 | {deptno: 2, dname: 'MANAGER', dloc: 'Mumbai'} |  Tony |        ['App'] | 35,000
+   1 |     {deptno: 1, dname: 'CLERK', dloc: 'Pune'} | Noddy | ['App', 'Web'] | 30,000
+   2 | {deptno: 2, dname: 'DEVELOPER', dloc: 'Pune'} | Moody |        ['App'] | 35,000
+   4 | {deptno: 2, dname: 'DEVELOPER', dloc: 'Pune'} | Rhody |        ['Web'] | 30,000
+   3 |     {deptno: 3, dname: 'ADMIN', dloc: 'Pune'} |  Cody |    ['Backend'] | 25,000
+
+(5 rows)
+ 
+
+b. create index on ename column
+cqlsh:iacsd0923> create index idxname on emp(ename);
+cqlsh:iacsd0923> select * from emp;
+
+ eid | dept                                          | ename | projects       | sal
+-----+-----------------------------------------------+-------+----------------+--------
+   5 | {deptno: 2, dname: 'MANAGER', dloc: 'Mumbai'} |  Tony |        ['App'] | 35,000
+   1 |     {deptno: 1, dname: 'CLERK', dloc: 'Pune'} | Noddy | ['App', 'Web'] | 30,000
+   2 | {deptno: 2, dname: 'DEVELOPER', dloc: 'Pune'} | Moody |        ['App'] | 35,000
+   4 | {deptno: 2, dname: 'DEVELOPER', dloc: 'Pune'} | Rhody |        ['Web'] | 30,000
+   3 |     {deptno: 3, dname: 'ADMIN', dloc: 'Pune'} |  Cody |    ['Backend'] | 25,000
+
+(5 rows)
+
+ 
+
